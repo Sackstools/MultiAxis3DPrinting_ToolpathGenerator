@@ -1,7 +1,11 @@
-#include "Core"
-#include "LU"
-#include "Cholesky"
-#include "QR"
-#include "SVD"
-#include "Geometry"
-#include "Eigenvalues"
+#include "Core"    // Include statement for Core module
+#include "LU"      // Include statement for LU decomposition module
+#include "Cholesky"// Include statement for Cholesky decomposition module
+#include "QR"      // Include statement for QR decomposition module
+#include "SVD"     // Include statement for Singular Value Decomposition module
+#include "Geometry"// Include statement for Geometry module
+#include "Eigenvalues"// Include statement for Eigenvalues module
+
+// This file contains include statements for various matrix decomposition and geometry modules.
+// These modules provide functionality for performing LU, Cholesky, QR, and Singular Value Decompositions,
+// as well as calculating eigenvalues and working with geometric transformations.
