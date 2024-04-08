@@ -4,47 +4,81 @@
 
 #include "GLKObList.h"
 
+// Forward declaration of GLKGraphNode class to avoid circular dependency
 #ifndef _GLKGRAPHNODE
 #define _GLKGRAPHNODE
 
 class GLKGraphNode : public GLKObject
 {
 public:
-	GLKGraphNode() {edgeList.RemoveAll();attachedObj=NULL;};
-	virtual ~GLKGraphNode() {};
-	void *attachedObj;
-	GLKObList edgeList;
+    // Default constructor
+    GLKGraphNode() {
+        // Initialize the edge list and attached object
+        edgeList.RemoveAll();
+        attachedObj = NULL;
+        // Initialize the variables for minimum cut
+        m_excess = 0.0;
+        m_height = 0;
+        nextNode = NULL;
+    };
 
-	//---------------------------------------------------------------
-	//	the following variables are for minimum cut
-	double m_excess;
-	int m_height;
-	GLKGraphNode *nextNode;
+    // Default destructor
+    virtual ~GLKGraphNode() {};
+
+    // Attached object pointer
+    void *attachedObj;
+
+    // List of edges connected to this node
+    GLKObList edgeList;
+
+    // Variables for minimum cut
+    double m_excess;
+    int m_height;
+    GLKGraphNode *nextNode;
 };
 
+// Define GLKGRAPHNODE to avoid redefinition
 #endif
 
+// Forward declaration of GLKGraphEdge class to avoid circular dependency
 #ifndef _GLKGRAPHEDGE
 #define _GLKGRAPHEDGE
 
 class GLKGraphEdge : public GLKObject
 {
 public:
-	GLKGraphEdge() {startNode=NULL;	endNode=NULL;	m_weight=0.0;};
-	virtual ~GLKGraphEdge() {};
+    // Default constructor
+    GLKGraphEdge() {
+        // Initialize the start node, end node, weight, and attached object
+        startNode = NULL;
+        endNode = NULL;
+        m_weight = 0.0;
+        attachedObj = NULL;
+        // Initialize the variable for minimum cut
+        m_flow = 0.0;
+    };
 
-	GLKGraphNode* startNode;
-	GLKGraphNode* endNode;
-	double m_weight;
-	void *attachedObj;
+    // Default destructor
+    virtual ~GLKGraphEdge() {};
 
-	//---------------------------------------------------------------
-	//	the following variables are for minimum cut
-	double m_flow;
+    // Pointers to the start and end nodes
+    GLKGraphNode* startNode;
+    GLKGraphNode* endNode;
+
+    // Weight of the edge
+    double m_weight;
+
+    // Attached object pointer
+    void *attachedObj;
+
+    // Variable for minimum cut
+    double m_flow;
 };
 
+// Define GLKGRAPHEDGE to avoid redefinition
 #endif
 
+// Forward declaration of GLKGraphCutNode class to avoid circular dependency
 #ifndef _GLKGRAPH
 #define _GLKGRAPH
 
@@ -53,36 +87,32 @@ class GLKGraphCutNode;
 class GLKGraph  
 {
 public:
-	GLKGraph();
-	virtual ~GLKGraph();
+    // Default constructor
+    GLKGraph();
 
-	void AddNode(GLKGraphNode *node);
-	void AddEdge(GLKGraphEdge *edge);
-	void FillInEdgeLinkersOnNodes();
+    // Default destructor
+    virtual ~GLKGraph();
 
-	void _Debug();
+    // Add a node to the graph
+    void AddNode(GLKGraphNode *node);
 
-	//---------------------------------------------------------------------
-	//	The following function is implemented by the relabel-to-front algorithm
+    // Add an edge to the graph
+    void AddEdge(GLKGraphEdge *edge);
+
+    // Fill in the edge linkers on nodes
+    void FillInEdgeLinkersOnNodes();
+
+    // Debug function to print the graph
+    void _Debug();
+
+    // Minimum cut function
 public:
-	double MinimumCut(GLKGraphNode *sourceNode, GLKGraphNode *targetNode, 
-			GLKObList *sourceRegionNodeList, GLKObList *targetRegionNodeList, 
-			bool bComputeMaxFlow=false);
-private:
-	void _initializePreflow(GLKGraphNode *sourceNode);
-	void _discharge(GLKGraphNode *uNode);
-	void _push(GLKGraphNode *uNode, GLKGraphEdge *edge);
-	void _relable(GLKGraphNode *uNode);
-	void _partitionByResidualGraph(GLKGraphNode *sourceNode, GLKGraphNode *targetNode, 
-			GLKObList *sourceRegionNodeList, GLKObList *targetRegionNodeList);
-	void _propagateInResidualGraph(GLKGraphNode *node, GLKObList *regionNodeList);
-	double _computeMaxFlow();
+    double MinimumCut(GLKGraphNode *sourceNode, GLKGraphNode *targetNode, 
+                      GLKObList *sourceRegionNodeList, GLKObList *targetRegionNodeList, 
+                      bool bComputeMaxFlow = false);
 
 private:
-	void clearAll();
-
-	GLKObList nodeList;
-	GLKObList edgeList;
-};
-
-#endif
+    // Helper functions for minimum cut
+    void _initializePreflow(GLKGraphNode *sourceNode);
+    void _discharge(GLKGraphNode *uNode);
+    void _push(GLKGraphNode *u
