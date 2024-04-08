@@ -1,10 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- This is an MSBuild project file with the version number "Current" and XML namespace 
+defined for compatibility with Microsoft's developer tools. -->
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- This PropertyGroup element is empty and serves as a placeholder for properties. -->
   <PropertyGroup />
+
+  <!-- This PropertyGroup element is labeled "QtSettings" and is conditionally executed when
+  the build configuration is "Debug" and the platform is "x64". It contains a property 
+  named "QtLastBackgroundBuild" with a timestamp value. -->
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtLastBackgroundBuild>2022-03-03T21:58:13.4723963Z</QtLastBackgroundBuild>
   </PropertyGroup>
+
+  <!-- This PropertyGroup element is identical to the previous one, but is conditionally 
+  executed when the build configuration is "Release" and the platform is "x64". -->
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtLastBackgroundBuild>2022-03-03T21:58:13.8467695Z</QtLastBackgroundBuild>
   </PropertyGroup>
+
 </Project>
