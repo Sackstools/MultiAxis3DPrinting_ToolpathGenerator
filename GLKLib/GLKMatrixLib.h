@@ -1,4 +1,5 @@
 // GLKMatrixLib.h: interface for the GLKMatrixLib class.
+// This header file defines the GLKMatrixLib class, which provides various matrix operations.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -9,14 +10,22 @@
 class GLKMatrix
 {
 public:
+	// Default constructor initializes the matrix with no rows and columns
 	GLKMatrix() { mat = 0; m = 0; n = 0; };
+
+	// Constructor with parameters initializes the matrix with specified number of rows and columns
 	GLKMatrix(int _m, int _n);
+
+	// Destructor deallocates memory used by the matrix
 	~GLKMatrix();
 
+	// CreateMatrix creates a matrix with specified number of rows and columns
 	void CreateMatrix(int _m, int _n);
+
+	// DeleteMatrix deallocates memory used by the matrix
 	void DeleteMatrix();
 
-	//overload operators
+	// Overloaded operators for matrix manipulation
 	double& operator()(const int& i, const int& j) { return mat[i][j]; }
 	double* operator[](const int& i) { return mat[i]; }
 	operator double**() const { return mat; }
@@ -29,23 +38,26 @@ public:
 	GLKMatrix& operator+=(GLKMatrix &rhs);
 	GLKMatrix& operator*=(const double &rhs);
 
-
-	//info
+	// Functions to get matrix properties
 	void PrintElements();
 	int getRowNumber() { return m; };
 	int getColumnNumber() { return n; };
 
 private:
-	double **mat;
-	int m, n;
+	double **mat; // Pointer to the matrix data
+	int m, n; // Number of rows and columns in the matrix
 };
 
 class GLKMatrixLib  
 {
 public:
+	// Default constructor
 	GLKMatrixLib();
+
+	// Destructor
 	virtual ~GLKMatrixLib();
 
+	// Static functions for matrix operations
 	static void CreateMatrix(double** &a, int row, int col);
 	static void DeleteMatrix(double** &a, int row, int col);
 	static void CreateMatrix(bool** &a, int row, int col);
@@ -91,34 +103,4 @@ public:
     // Analytic solution for 2x2 and 3x3 singular value decomposition
         // as well as analytic solution for 2x2 and 3x3 matrix inverse
     static bool SingularValueDecomposition_2by2(double** a, double** u, double** v);
-    static bool EigenDecomposition_2by2(double ATA[2][2], double& eigenValue1, double& eigenValue2, double eignVec1[], double eignVec2[]);
-
-	static void SVDSolver(double** a, int n, double* b, double criterion=0.001);
-
-	static bool JacobianEigensystemSolver(double**a /*n by n*/, 
-					int n, double **eigenvectors, double *eigenvalues, double eps, int maxIter);
-	// Note that: the matrix a[0...(n-1)][0...(n-1)] should be real symmetric
-	//		has been modified during this function,
-	//		and the eigen vectors are represented in columns.
-	// For the returned "eigenvectors", eigenvectors[..][i] represents the eigenVector for the
-	//		i-th eigenValue
-
-	static bool HessenbergQREigenvaluesComputing(double**a /*n by n*/, 
-					int n, double *eigenvalues_Re, double *eigenvalues_Im, 
-					double eps, int maxIter);
-	// Note that: the matrix a[0...(n-1)][0...(n-1)] is only required to be real 
-	//		(i.e., asymmetric also works)
-	static void ComputeEigenvectorByEigenvalue(double**a /*n by n*/, 
-					int n, double eigenvalue, double*eigenvector);
-
-private:
-	static void ppp(double** a,double* e, double* s, double** v, int m, int n);
-	static void sss(double fg[], double cs[]);
-
-	static void _HessenbergConversion(double* a, int n);
-	static bool _Hessenberg_QR_Eigen(double* a, int n, double *u, double *v, double eps, int jt);
-
-    static bool _normalize(int m, double n[]);
-};
-
-#endif
+    static bool EigenDecomposition_2by2(double ATA[2][2], double& eigen
