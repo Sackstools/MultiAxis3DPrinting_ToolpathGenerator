@@ -1,76 +1,103 @@
-#pragma once
+// QMeshCluster.h
 
-#include "../GLKLib/GLKObList.h"
-
-class QMeshNode;
-class QMeshFace;
-class CCH_ATTRIB_EDGE;
-
-
+// A class representing a mesh cluster, which is a collection of faces, nodes, and edges.
+// Inherits from GLKObject, which provides basic object functionality.
 class QMeshCluster : public GLKObject
 {
 public:
-	QMeshCluster();
-	virtual ~QMeshCluster();
+    // Constructor
+    QMeshCluster();
+
+    // Destructor
+    virtual ~QMeshCluster();
 
 public:
 
-	int GetIndexNo();		//from 1 to n
-	void SetIndexNo( const int _index = 1 );
+    // Returns the index number of the cluster (from 1 to n).
+    int GetIndexNo();
 
-	int GetClusterFaceNumber();
-	int GetClusterNodeNumber();
+    // Sets the index number of the cluster (from 1 to n).
+    void SetIndexNo(const int _index = 1);
+
+    // Returns the number of faces in the cluster.
+    int GetClusterFaceNumber();
+
+    // Returns the number of nodes in the cluster.
+    int GetClusterNodeNumber();
+
+    // Returns the number of edges in the cluster.
     int GetClusterEdgeNumber();
 
-	QMeshFace* GetClusterFaceRecordPtr(int No);//from 1 to n
-	QMeshNode* GetClusterNodeRecordPtr(int No);//from 1 to n
-	QMeshEdge* GetClusterEdgeRecordPtr(int No);//from 1 to n
-    
-	GLKObList& GetClusterFaceList();
-	GLKObList& GetClusterNodeList();
-	GLKObList& GetClusterEdgeList();
-	GLKObList& GetBndCurveList();
+    // Returns a pointer to the cluster face record with the given index (from 1 to n).
+    QMeshFace* GetClusterFaceRecordPtr(int No);
 
-	GLKObList& GetAnchorNodeList();
-   
-	QMeshFace* centroidFace;
+    // Returns a pointer to the cluster node record with the given index (from 1 to n).
+    QMeshNode* GetClusterNodeRecordPtr(int No);
+
+    // Returns a pointer to the cluster edge record with the given index (from 1 to n).
+    QMeshEdge* GetClusterEdgeRecordPtr(int No);
+
+    // Returns a reference to the list of cluster faces.
+    GLKObList& GetClusterFaceList();
+
+    // Returns a reference to the list of cluster nodes.
+    GLKObList& GetClusterNodeList();
+
+    // Returns a reference to the list of cluster edges.
+    GLKObList& GetClusterEdgeList();
+
+    // Returns a reference to the list of cluster boundary curves.
+    GLKObList& GetBndCurveList();
+
+    // Returns a reference to the list of cluster anchor nodes.
+    GLKObList& GetAnchorNodeList();
+
+    // A pointer to the centroid face of the cluster.
+    QMeshFace* centroidFace;
 
 private:
-	int indexno;			// start from 1 to n  
+    // The index number of the cluster (from 1 to n).
+    int indexno;
 
-	GLKObList clusterFaceList;	// a list of cluster's faces
-	GLKObList clusterNodeList;	// a list of cluster's nodes
-	GLKObList clusterEdgeList;	// a list of cluster's Edges
-	GLKObList clusterAnchorNodeList; //a list of cluster's Anchor Nodes
-	GLKObList clusterBndCurveList; //a list of cluster's Boundary curves
+    // A list of cluster faces.
+    GLKObList clusterFaceList;
+
+    // A list of cluster nodes.
+    GLKObList clusterNodeList;
+
+    // A list of cluster edges.
+    GLKObList clusterEdgeList;
+
+    // A list of cluster anchor nodes.
+    GLKObList clusterAnchorNodeList;
+
+    // A list of cluster boundary curves.
+    GLKObList clusterBndCurveList;
 };
 
+// A class representing a mesh cluster boundary curve, which is a collection of edges.
+// Inherits from GLKObject, which provides basic object functionality.
 class QMeshClusterBndCurve : public GLKObject
 {
 public:
-	QMeshClusterBndCurve();
-	virtual ~QMeshClusterBndCurve();
+    // Constructor
+    QMeshClusterBndCurve();
 
-	GLKObList *GetEdgeList() {return m_edgeList;};
+    // Destructor
+    virtual ~QMeshClusterBndCurve();
 
-	void SetLeftCluster(QMeshCluster *cluster) {m_leftCluster=cluster;};
-	QMeshCluster *GetLeftCluster() {return m_leftCluster;};
-	void SetRightCluster(QMeshCluster *cluster) {m_rightCluster=cluster;};
-	QMeshCluster *GetRightCluster() {return m_rightCluster;};
-	void SetGlobalIndex(int _Index) {GlobalIndex = _Index;};
-	int GetGlobalIndex() {return GlobalIndex;};
+public:
 
-	QMeshNode * GetStartPoint();
-    void SetStartPoint(QMeshNode* _pStartPoint = nullptr );
-	
-	QMeshNode * GetEndPoint();
-    void SetEndPoint(QMeshNode* _pEndPoint = nullptr );
+    // Returns a pointer to the list of edges in the boundary curve.
+    GLKObList* GetEdgeList();
 
-	CCH_ATTRIB_EDGE* attrEdge;
-private:
-	int GlobalIndex;
-	QMeshNode* pStartPoint, * pEndPoint;
-	QMeshCluster* m_leftCluster, * m_rightCluster;
-	GLKObList* m_edgeList;	//	Flag 4 of each edge is used here to indicate the direction of 
-							//	this edge in this boundary curve
-};
+    // Sets the left cluster of the boundary curve.
+    void SetLeftCluster(QMeshCluster* cluster);
+
+    // Returns a pointer to the left cluster of the boundary curve.
+    QMeshCluster* GetLeftCluster();
+
+    // Sets the right cluster of the boundary curve.
+    void SetRightCluster(QMeshCluster* cluster);
+
+    // Returns a pointer to the right cluster of the boundary curve
