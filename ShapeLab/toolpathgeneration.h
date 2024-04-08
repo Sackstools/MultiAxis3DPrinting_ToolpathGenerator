@@ -11,81 +11,99 @@
 class toolPathGeneration
 {
 public:
-	toolPathGeneration(QMeshPatch* inputMesh);
-	~toolPathGeneration();
+    // Constructor for the toolPathGeneration class
+    toolPathGeneration(QMeshPatch* inputMesh);
 
-	void generateZigzagToolPath(PolygenMesh* tPath, int Num);
-	void generateBundaryToolPath(PolygenMesh* tPath, int Num, double offset);
+    // Destructor for the toolPathGeneration class
+    ~toolPathGeneration();
 
-	void resampling(PolygenMesh* tPath);
+    // Generate a zigzag tool path
+    void generateZigzagToolPath(PolygenMesh* tPath, int Num);
 
-	int autoComputeTPathNum(bool type);
-	double autoComputeZigZagTPathOffestingValue(
-		int zigzagTPathNum, int boundaryTPathNum, double boundaryTPathOffset);
+    // Generate a boundary tool path
+    void generateBundaryToolPath(PolygenMesh* tPath, int Num, double offset);
 
-	void mergeFieldforCCF();
+    // Resample the tool path
+    void resampling(PolygenMesh* tPath);
 
-	double minBoundaryFieldValue;
-	double maxGapDist;
-	double maxConnectDist;
-	double boundaryGapDist;
-	double toolpathOffset;
+    // Automatically compute the number of tool path nodes
+    int autoComputeTPathNum(bool type);
 
-	bool breakZigzagbyBoundary = true;
+    // Automatically compute the zigzag tool path offset value
+    double autoComputeZigZagTPathOffestingValue(
+        int zigzagTPathNum, int boundaryTPathNum, double boundaryTPathOffset);
 
+    // Merge field data for CCF
+    void mergeFieldforCCF();
+
+    // Member variables
+    double minBoundaryFieldValue;
+    double maxGapDist;
+    double maxConnectDist;
+    double boundaryGapDist;
+    double toolpathOffset;
+
+    bool breakZigzagbyBoundary;
 
 private:
-	GLKObList zigzagPathList; //install zigzag isonode
-	GLKObList boundPathList; //install boundary isonode
+    // List of zigzag tool path iso-nodes
+    GLKObList zigzagPathList;
 
-	Eigen::MatrixXi edgePIndex;    //connection between isonode and surfaceMesh edge (zigzag)
-	Eigen::MatrixXi edgeBPIndex;   //connection between isonode and surfaceMesh edge (boundary)
+    // List of boundary tool path iso-nodes
+    GLKObList boundPathList;
 
-	QMeshPatch* surfaceMesh;
+    // Connection between iso-nodes and surface mesh edges (zigzag)
+    Eigen::MatrixXi edgePIndex;
 
-	double resamplingLength;
-	int minZigZagtoolpathNodeNum;
+    // Connection between iso-nodes and surface mesh edges (boundary)
+    Eigen::MatrixXi edgeBPIndex;
 
-	void initialize(int Num);
-	void initialize(int Num, double offset);
+    // Surface mesh
+    QMeshPatch* surfaceMesh;
 
-	/* Below are the function for zigzag tool path generation */
-	bool generateZigZagIsoNode(int Num);
+    // Resampling length
+    double resamplingLength;
 
-	bool generateSingleZigzagToolPathIsoNode(QMeshPatch* singlePath, double isoValue);
-	void connectZigZagToolPathToRegion(PolygenMesh* tPath);
-	QMeshNode* connectSingleZigZagToolPathandGenerateEdge(
-		QMeshNode* startNode, QMeshNode *edgeSNode, QMeshPatch* tPathRegion, QMeshPatch* thisTPath, double endPointPos[]);
+    // Minimum number of zigzag tool path nodes
+    int minZigZagtoolpathNodeNum;
 
-	/* Below are the function for boundary tool path generation */
-	void generateBoundaryIsoNode(int Num, double offset);
+    // Initialize the tool path generation
+    void initialize(int Num);
+    void initialize(int Num, double offset);
 
-	void generateSingleBoundaryToolPathIsoNode(QMeshPatch* singlePath, double isoValue);
-	void buildOutRingToolPathandConnectZigzagPath(PolygenMesh* tPath);
-	void buildOutRingToolPath_without_ConnectZigzagPath(PolygenMesh* tPath);
+    // Functions for zigzag tool path generation
+    bool generateZigZagIsoNode(int Num);
 
+    bool generateSingleZigzagToolPathIsoNode(QMeshPatch* singlePath, double isoValue);
+    void connectZigZagToolPathToRegion(PolygenMesh* tPath);
+    QMeshNode* connectSingleZigZagToolPathandGenerateEdge(
+        QMeshNode* startNode, QMeshNode *edgeSNode, QMeshPatch* tPathRegion, QMeshPatch* thisTPath, double endPointPos[]);
 
+    // Functions for boundary tool path generation
+    void generateBoundaryIsoNode(int Num, double offset);
 
-	void generateSingleBoundaryToolPath(PolygenMesh* tPath, double isoValue);
-	QMeshNode* buildOneRingBoundaryToolPath(QMeshNode* startNode, QMeshNode*sNode, QMeshPatch* patch, QMeshPatch* boundIsoPatch);
-	QMeshNode* findNextBoundaryToolPath(QMeshNode* startNode, QMeshPatch* boundIsoPatch);
-	QMeshNode* findNextNearestPoint(QMeshNode* startNode, QMeshPatch* boundIsoPatch);
+    void generateSingleBoundaryToolPathIsoNode(QMeshPatch* singlePath, double isoValue);
+    void buildOutRingToolPathandConnectZigzagPath(PolygenMesh* tPath);
+    void buildOutRingToolPath_without_ConnectZigzagPath(PolygenMesh* tPath);
 
-	/* Other assistant function */
-	double computeAverageConnectEdgeLength(QMeshPatch* patch);
-	double resamplingSinglePatch(QMeshPatch* patch);
+    void generateSingleBoundaryToolPath(PolygenMesh* tPath, double isoValue);
+    QMeshNode* buildOneRingBoundaryToolPath(QMeshNode* startNode, QMeshNode*sNode, QMeshPatch* patch, QMeshPatch* boundIsoPatch);
+    QMeshNode* findNextBoundaryToolPath(QMeshNode* startNode, QMeshPatch* boundIsoPatch);
+    QMeshNode* findNextNearestPoint(QMeshNode* startNode, QMeshPatch* boundIsoPatch);
 
-	/* Other assistant function */
-	bool detectSingleZigZagToolPathisProcessed(QMeshPatch* singlePath);
-	bool detectAllZigZagToolPathisProcessed();
-	bool detectAllBoundaryToolPathisProcessed();
+    // Other assistant functions
+    double computeAverageConnectEdgeLength(QMeshPatch* patch);
+    double resamplingSinglePatch(QMeshPatch* patch);
 
-	
+    // Other assistant functions
+    bool detectSingleZigZagToolPathisProcessed(QMeshPatch* singlePath);
+    bool detectAllZigZagToolPathisProcessed();
+    bool detectAllBoundaryToolPathisProcessed();
 
-	QMeshNode* buildNewNodetoQMeshPatch(QMeshPatch* patch, double pp[], double normal[]);
-	QMeshEdge* buildNewEdgetoQMeshPatch(QMeshPatch* patch, QMeshNode* startNode, QMeshNode* endNode);
+    QMeshNode* buildNewNodetoQMeshPatch(QMeshPatch* patch, double pp[], double normal[]);
+    QMeshEdge* buildNewEdgetoQMeshPatch(QMeshPatch* patch, QMeshNode* startNode, QMeshNode* endNode);
 
-	bool runBreakingChecking(double firstCurve_IsoValue, double minBoundaryFieldValue);
+    bool runBreakingChecking(double firstCurve_IsoValue, double minBoundaryFieldValue);
 };
 
 #endif // TOOLPATHGENERATION_H
