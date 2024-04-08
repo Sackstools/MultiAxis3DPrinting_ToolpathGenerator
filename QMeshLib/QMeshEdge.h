@@ -14,102 +14,109 @@ class QMeshFace;
 class QMeshEdge : public GLKObject  
 {
 public:
-	QMeshEdge();
-	virtual ~QMeshEdge();
+    // Constructors and destructors
+    //--------------------------------
+    QMeshEdge();
+    virtual ~QMeshEdge();
 
 public:
-	bool GetAttribFlag( const int whichBit );
-	void SetAttribFlag( const int whichBit, const bool toBe = true );
+    // Attribute flag manipulation functions
+    //---------------------------------------
+    bool GetAttribFlag(const int whichBit);
+    void SetAttribFlag(const int whichBit, const bool toBe = true);
 
-	int GetIndexNo();		//from 1 to n
-	void SetIndexNo( const int _index = 1 );
+    // Index-related functions
+    //-------------------------
+    int GetIndexNo();		//from 1 to n
+    void SetIndexNo(const int _index = 1);
 
-	bool IsBoundaryEdge();
+    // Boundary edge identification function
+    //---------------------------------------
+    bool IsBoundaryEdge();
 
-	QMeshNode * GetStartPoint();
-    void SetStartPoint( QMeshNode * _pStartPoint = nullptr );
+    // Start and end point access functions
+    //--------------------------------------
+    QMeshNode * GetStartPoint();
+    void SetStartPoint(QMeshNode *_pStartPoint = nullptr);
 
-	QMeshNode * GetEndPoint();
-    void SetEndPoint( QMeshNode * _pEndPoint = nullptr );
+    QMeshNode * GetEndPoint();
+    void SetEndPoint(QMeshNode *_pEndPoint = nullptr);
 
-	QMeshFace * GetLeftFace();
-    void SetLeftFace( QMeshFace * _pLeftFace = nullptr );
+    // Left and right face access functions
+    //-------------------------------------
+    QMeshFace * GetLeftFace();
+    void SetLeftFace(QMeshFace *_pLeftFace = nullptr);
 
-	QMeshFace * GetRightFace();
-    void SetRightFace( QMeshFace * _pRightFace = nullptr );
+    QMeshFace * GetRightFace();
+    void SetRightFace(QMeshFace *_pRightFace = nullptr);
 
-	void SetMeshPatchPtr(QMeshPatch* _mesh);
-	QMeshPatch* GetMeshPatchPtr();
+    // Mesh patch pointer management functions
+    //----------------------------------------
+    void SetMeshPatchPtr(QMeshPatch* _mesh);
+    QMeshPatch* GetMeshPatchPtr();
 
-	void CalNormal(double normal[]);
+    // Normal calculation function
+    //-----------------------------
+    void CalNormal(double normal[]);
 
-	void SetSharpFactor(int factor);
-	int GetSharpFactor();
+    // Sharp factor manipulation functions
+    //-------------------------------------
+    void SetSharpFactor(int factor);
+    int GetSharpFactor();
 
-	double CalLength();
-	double GetLength() {return m_edgeLength;};
-	double Cal2DLength();
-	double Get2DLength() {return m_edge2DLength;};
+    // Length and 2D length calculation functions
+    //--------------------------------------------
+    double CalLength();
+    double GetLength();
+    double Cal2DLength();
+    double Get2DLength();
 
-    GLKObList& GetAttachedList() {return attachedList;};
-
-	////******************************************************************
-	////	Interpolate Points List
-	//int attrPntNum;
-	//float **attrPnt;		//	attrPnt[attrPntNum][3]
-	//float *attrLength;		//	attrLength[attrPntNum-1]
-	//float attrTotalLength;	
-
-	void *attachedPointer;
-    bool boundary, boundary1, boundary2;
-    int SystemLineID;
-
-    bool inner;
-    //int seamIndex;
-    bool selected;
-    //int cableIndex = -1;
-    bool IsMoreWeight;
-    bool bVisit;
-	int index_forAbaqus = 0;
-    double weight;
+    // Attached list access function
+    //-------------------------------
+    GLKObList& GetAttachedList();
 
 private:
-	int indexno;
-	bool flags[8];
-				// bit 0 -- TRUE for boundary edge
-				// bit 1 -- TRUE for sharp-feature edge	(or edges on key feature curves)
-				// bit 2 -- TRUE for sharp-feature-region edge (or edges on accessory feature curves)
-				// bit 4 -- TRUE for the edge needs to be splitted
-				// bit 6 -- TRUE for edges need to be cut off
-				// bit 7 -- temp use
+    // Index and flag variables
+    //--------------------------
+    int indexno;
+    bool flags[8];
 
-                                     //*** Edge vector definition ***
-                                     //                             *
-		                             //         end point           *
-	QMeshNode * pStartPoint;		 //           /|\               *
-	QMeshNode * pEndPoint;			 //            |                *
-                                     //  left face | right face     *
-	QMeshFace * pLeftFace = nullptr; //            |                *
-	QMeshFace * pRightFace = nullptr;//            |                *
-		                             //       start point           *
-		                             //                             *
-		                             //******************************
+    // Start and end point pointers
+    //------------------------------
+    QMeshNode *pStartPoint;
+    QMeshNode *pEndPoint;
 
-	QMeshPatch *meshSurface;		// QMesh contain this edge
+    // Left and right face pointers
+    //-----------------------------
+    QMeshFace *pLeftFace;
+    QMeshFace *pRightFace;
 
-	GLKObList attachedList;			// a list of attached object
+    // Mesh patch pointer
+    //--------------------
+    QMeshPatch *meshSurface;
 
-	int m_sharpFactor;	
-	double m_edgeLength,m_edge2DLength;
+    // Attached object list
+    //---------------------
+    GLKObList attachedList;
 
-	//for volume mesh
-	GLKObList FaceList;	// a list of triangle's faces (TRGLFACE)
+    // Sharp factor and length variables
+    //-----------------------------------
+    int m_sharpFactor;
+    double m_edgeLength, m_edge2DLength;
+
+    // Triangle face list (for volume mesh)
+    //-------------------------------------
+    GLKObList FaceList;
 
 public:
-	GLKObList& GetFaceList();
+    // Triangle face list access function
+    //-----------------------------------
+    GLKObList& GetFaceList();
 
-	bool isConnectEdge = false;
-	int refineNodeIndex;
+    // Additional variables
+    //---------------------
+    bool isConnectEdge;
+    int refineNodeIndex;
 
 };
 
